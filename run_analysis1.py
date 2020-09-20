@@ -170,31 +170,10 @@ duration_NGA = end_year_NGA-start_year_NGA
 n_iter_list =   np.floor(duration_NGA/years_move).astype(int)
 
 flag_barrier=1
-dist_transition_from_unif_list = []
-dist_cum_transition_from_unif_list = []
-ratio_init_input = np.ones(n_bin)/n_bin
 n_iter=10
 for i in range(30):
     init = init_PC1[i] #doesn't matter
-    
-    transition_count_matrix_from_unif, transition_prob_matrix_from_unif,ratio_init,dist_transition_from_unif,dist_cum_transition_from_unif = cum_transition(PC1,vel_PC1,init, years_move=years_move,n_bin=n_bin,n_iter=n_iter,flag_barrier=flag_barrier,graph=False ,flag_rm_jump=False,ratio_init_input=ratio_init_input )    
-    dist_transition_from_unif_list.append(dist_transition_from_unif)
-    dist_cum_transition_from_unif_list.append(dist_cum_transition_from_unif)    
-
-dist_sum_NGA_from_unif = np.zeros(n_bin)
-for i in range(30):
-    dist_cum_final_from_unif = np.sum(dist_transition_from_unif_list[i],axis=0)
-    dist_sum_NGA_from_unif = (dist_sum_NGA_from_unif +dist_cum_final_from_unif.flatten() )
-
-dist_cum_transition_list = []
-ratio_init_input = np.ones(n_bin)/n_bin
-n_iter=10
-
-for i in range(30):
-    init = init_PC1[i] #doesn't matter
-    
     transition_count_matrix, transition_prob_matrix,ratio_init,dist_transition,dist_cum_transition = cum_transition(PC1,vel_PC1,init, years_move=years_move,n_bin=n_bin,n_iter=n_iter,flag_barrier=flag_barrier,graph=False ,flag_rm_jump=False,ratio_init_input=None )    
-    dist_cum_transition_list.append(dist_cum_transition)
 
 plt.imshow(transition_prob_matrix, cmap='hot')
 plt.xticks(np.arange(n_bin),np.around(center_list,decimals=1) )
