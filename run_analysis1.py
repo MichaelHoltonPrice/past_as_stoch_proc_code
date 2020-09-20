@@ -1,62 +1,95 @@
-import time
-from collections import defaultdict
-import os
-import math
-import time
-import pickle
-import copy 
-import sys
-
-import pandas as pd 
 import numpy as np
-from sklearn import linear_model
-from sklearn.preprocessing import StandardScaler, normalize
-from sklearn.mixture import GaussianMixture as GMM
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA, FastICA
-from sklearn.linear_model import LinearRegression
-from scipy.stats import multivariate_normal, norm
-import scipy.spatial as spatial
 import tensorflow as tf
-# sudo apt-get install python3-tk # needs this
 import matplotlib
 matplotlib.use('Agg') # so a display is not needed (e.g., if running Ubuntu with WSL 2 or in Docker container)
-from matplotlib import pyplot as plt, cm as cm, mlab as mlab
-from matplotlib.patches import Patch
-from matplotlib.patches import Rectangle
-import matplotlib.patches as mpatches
-import matplotlib.gridspec as gridspec
-#import seaborn as sns; sns.set()
-from IPython.core.debugger import Pdb
-
+from matplotlib import pyplot as plt
 from seshat import *
     
 # Call generate_core_data (see seshat module defined in seshat.py) to load data for subsequent analyses
 print('Calling generate_core_data')
 worldRegions,NGAs,PC_matrix,CC_df, CC_times, CC_scaled, PC1_df,regionDict,t_min,t_max,pc1_min,pc1_max,flowInfo, movArrayOut,velArrayOut,movArrayIn,velArrayIn,flowInfoInterp,movArrayOutInterp,r0,minPoints,dGrid,u0Vect,v0Vect,velScaling = generate_core_data()
 
+###############################################################################
+# Figure 1
+# Average score of observations on PC2 in a sliding window along PC1
+###############################################################################
+print('Making Figure 1')
+PC1=velArrayOut[:,0,0]
+PC2=velArrayOut[:,1,0]
+PC1_vel = velArrayOut[:,0,1]*100
+PC2_vel = velArrayOut[:,1,1]*100
+
+window_width =1.0
+overlap = .5
+
+score_list = []
+vel_list = []
+score_std_list = []
+vel_std_list = []
+
+score_error_list = []
+vel_error_list = []
+
+center_list = []
+
+PC1_min = np.min(PC1)
+PC1_max = np.max(PC1)
+
+n_window = np.ceil( (PC1_max - PC1_min - window_width)/(window_width-overlap) ).astype(int)
+
+for i in range(n_window):
+  window = np.array([PC1_min+i*(window_width-overlap), PC1_min+i*(window_width-overlap)+window_width])
+  center = np.mean(window)
+  loc = (window[0]<=PC1) * (PC1<window[1])
+  
+  PC2_in_window = PC2[loc]
+  PC2_vel_in_window = PC2_vel[loc]
+  PC2_vel_in_window = PC2_vel_in_window[~np.isnan(PC2_vel_in_window)]
+    
+  score = np.mean(PC2_in_window)
+  vel = np.mean(PC2_vel_in_window)
+  score_std = np.std(PC2_in_window)
+  vel_std = np.std(PC2_vel_in_window)
+
+  score_error = score_std/np.sqrt(len(PC2_in_window) )
+  vel_error = vel_std/np.sqrt( len(PC2_vel_in_window) )
+  
+  center_list.append(center)
+  score_list.append(score)
+  vel_list.append(vel)
+  score_std_list.append(score_std)
+  vel_std_list.append(vel_std)
+  
+  score_error_list.append(score_error)
+  vel_error_list.append(vel_error)
+   
+plt.axis()
+plt.xlim(-6,5)
+#plt.ylim(-3,3)
+plt.plot(center_list, score_list, 'b-o')
+plt.errorbar(center_list, score_list, yerr=score_error_list, capthick=2, capsize=3)
+plt.xlabel("PC1",size=15)
+plt.ylabel("PC2",size=15)
+plt.savefig("PC2_vs_PC1.pdf")
+plt.close()
+
 
 ###############################################################################
 # Figure 2
 # A histogram of PC1 values (projections onto PC1 of pooled imputations)
 ###############################################################################
-num_bins = 50
-#n, bins, patches = plt.hist(PC_matrix[:,0], num_bins, density=0, facecolor='blue', alpha=0.5)
-#n, bins, patches = plt.hist(PC_matrix[:,0], num_bins, density=0, facecolor='grey')
-#n, bins, patches = plt.hist(PC_matrix[:,0], num_bins, facecolor='grey')
+print('Making Figure 2')
 n, bins, patches = plt.hist(PC_matrix[:,0], np.arange(-6.4,4.2,.2), facecolor='blue',alpha=0.75)
-#ax = plt.axes()
-#ax.set_facecolor('white')
 plt.xlabel("PC1 Value",size=15)
 plt.ylabel("Counts",size=15)
-plt.savefig("pc1_histogram.pdf")
+plt.savefig("PC1_histogram.pdf")
 plt.close()
 
 ########################################################################
 # Figure 3
 # Markov transition matrix heatmap
 ########################################################################
-
+print('Making Figure 3')
 d_x_in = velArrayIn[:,:2,0] #The ending point of "IN" vector in the first 2 PC space
 d_y_in = velArrayIn[:,2:,0] #The ending point of "OUT" vector in the other 7 PC space
 d_v_in = velArrayIn[:,:2,1] #The "IN" velocity in the first 2 PC space
@@ -140,9 +173,6 @@ def cum_transition(PC1,vel_PC1_annual,init_PC1, years_move=100,n_bin=6,n_iter=10
         transition_count_matrix = None
         transition_prob_matrix = transition_prob_input
             
-    #transition_count_matrix,transition_prob_matrix = calc_transition_matrix(PC1,vel_PC1,n_bin)
-    #---------
-    
     dist_transition = []  
     dist_cum_transition = []      
 
