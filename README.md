@@ -8,7 +8,7 @@ cd past_as_stoch_proc_code
 docker build -t michaelholtonprice/past_stoch_proc .
 ```
 
-Start a container. Use the -v tag to mirror a directory for passing files between the host machine and the Docker container. The directory to the left of the semicolon is for the host machine and the directory to the left of the semicolon is for the Docker container.
+Start a container. Use the -v tag to mirror a directory for passing files between the host machine and the Docker container. The directory to the left of the semicolon is for the host machine and the directory to the right of the semicolon is for the Docker container.
 
 ```bash
 docker run --name past_stoch_proc -itv //c/Users/mpatm/past_stoch_proc_data:/data michaelholtonprice/past_stoch_proc
@@ -22,7 +22,7 @@ docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
 
 ## Option 2: Use a Docker image from Docker hub
 
-## Option 3: Run on an existing machine. R 3.5 or later is needed. Details will vary based on the machine and operating system. The following should work with Ubuntu or another Debian Linux flavor that uses the APT (the Advanced Package Protocol).
+## Option 3: Run on an existing machine. R 3.5 or later is needed. Details will vary based on the machine and operating system. The following should work with Ubuntu or another Debian Linux flavor that uses APT (Advanced Package Protocol).
 
 Clone the repository and enter the newly created directory:
 ```bash
@@ -49,21 +49,21 @@ pip3 install -r requirements.txt
 ```
 
 # Running the code
-The following steps assume the user starts in the past_as_stoch_proc_code directory, and the steps to run the code are identical regardless of which option is used to satisfy the software requirements.
+The following steps assume the user starts in the past_as_stoch_proc_code directory, and the steps to run the code are identical regardless of which option above is used to satisfy the software requirements.
 
-Enter the mhg_code directory and run the main analysis script to generate data for Figure S1. See below for a summary of the moralizing gods code.
+Enter the mhg_code directory and run the main analysis script to generate data for Figure S2. See below for a summary of the moralizing gods code.
 
 ```bash
 cd mhg_code
 Rscript '!MoralizingGods.R'
 ```
 
-Check the data against those used in the 2019 Nature paper by Whitehouse et al.:
+Check the data against those in the 2019 Nature paper by Whitehouse et al.:
 ```bash
 Rscript check_moralising_gods_status.R
 ```
 
-The data are not identical for the DoctrinalMode variable for to NGAs, Middle Yellow River Valley and Orkhon Valley. It's unclear what causes this discrepancy. However, only the MoralisingGods data are used in our article (the Doctrinal Mode data are not used).
+The data are not identical for the DoctrinalMode variable for two NGAs, Middle Yellow River Valley and Orkhon Valley. It's unclear what causes this discrepancy. However, only the MoralisingGods data are used in our article (the Doctrinal Mode data are not used).
 
 Return to the past_as_stoch_proc_code directory and run the Python script to make the publication figures.
 
@@ -72,7 +72,7 @@ cd ..
 python3 make_figures.py
 ```
 
-If using a Docker container with a mirrored directory on the host machine (see above), one can copy folders into the /data directory to view them on the host machine. For example, to copy the Moralizing Gods figure (Figure S1) use:
+If using a Docker container with a mirrored directory on the host machine (see above), one can copy folders into the /data directory to view them on the host machine. For example, to copy the Moralizing Gods figure (Figure S2) use:
 
 ```bash
 cp /past_as_stoch_proc_code/pc12_movement_plot_colored_by_MoralisingGods.pdf /data
@@ -83,7 +83,6 @@ I (Michael Holton Price / MHP) started with the code in the following repository
 
 https://github.com/pesavage/moralizing-gods
 
-However, the code in that repository uses hard-coded home directories of the authors and writes files to disk that are subsequently used in ways that make the main script, !MoralizingGods.R, run differently when called a second time. I therefore added minimal edits to make the code work. I have marked these edits with my initials, MHP. The exact commit of the preceding github repository that was used is bb63a09218ffb4e1723fa3a6e3da30baa0571cb1. While this is no longer the latest commit, using this earlier commit is fine because the results of the code I have provided match those in Whitehouse et al (2019).
+However, the code in that repository uses hard-coded home directories of the authors and the main script, !MoralizingGods.R, overwrites some necessary, starting .csv files with new data as it runs. The script clean_csv.R, which I have added to !MoralizingGods.R, handles this problem by deleting all .csv files in the mhg_code directory and copying in the original files from the directory mhg_code/starting_csv. When editing original code files from https://github.com/pesavage/moralizing-gods, I have marked my edits with my initials, MHP.
 
-The main script is !MoralizingGods.R. In the original github repository, /pesavage/moralizing-gods there are some starting .csv data files that are modified as the main script runs. Hence, it can only be run reproducibly once, and the starting .csv files must be replaced before re-running. The script clean_csv.R, which I have added to !MoralizingGods.R, handles this problem by deleting all .csv files in the mhg_code directory and copying in the original files from the directory mhg_code/starting_csv.
-
+The exact commit of the github repository https://github.com/pesavage/moralizing-gods that I started with is bb63a09218ffb4e1723fa3a6e3da30baa0571cb1. While this is no longer the latest commit, using this earlier commit is fine because the results of the code I have provided match those in Whitehouse et al (2019) for the MoralisingGods variable that we use in our article.
