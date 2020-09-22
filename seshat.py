@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import tensorflow as tf
+from sklearn.preprocessing import StandardScaler
+
 def tailored_svd(data):
     # perform singular value decomposition on the given data matrix
     #center the data

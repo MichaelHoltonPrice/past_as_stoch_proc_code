@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 import matplotlib
+import os
 matplotlib.use('Agg') # so a display is not needed (e.g., if running Ubuntu with WSL 2 or in Docker container)
 from matplotlib import pyplot as plt
 from seshat import *

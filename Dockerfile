@@ -25,7 +25,7 @@ WORKDIR /past_as_stoch_proc_code
 RUN Rscript install_R_dependencies.R
 
 # install python dependencies
-#RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 # docker build -t michaelholtonprice/past_stoch_proc .
 # docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
