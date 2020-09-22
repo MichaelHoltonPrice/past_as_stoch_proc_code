@@ -1,3 +1,8 @@
+# The following two commands can be used to build the Docker image and start a
+# container:
+#
+# docker build -t michaelholtonprice/past_stoch_proc .
+# docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
 FROM ubuntu:18.04
 
 # Set the following environmental variable to avoid interactively setting the
@@ -27,5 +32,3 @@ RUN Rscript install_R_dependencies.R
 # install python dependencies
 RUN pip3 install -r requirements.txt
 
-# docker build -t michaelholtonprice/past_stoch_proc .
-# docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
