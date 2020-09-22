@@ -22,6 +22,22 @@ docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
 
 ## Option 2: Use a Docker image from Docker Hub
 
+```bash
+docker pull michaelholtonprice/past_stoch_proc
+```
+
+Build the Docker image with a mirrored directory on the host (see above under Option 1):
+
+```bash
+docker run --name past_stoch_proc -itv //c/Users/mpatm/past_stoch_proc_data:/data michaelholtonprice/past_stoch_proc
+```
+
+Build the Docker image without a mirrored directory on the host (see above under Option 1):
+
+```bash
+docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
+```
+
 ## Option 3: Run on an existing machine. R 3.5 or later is needed. Details will vary based on the machine and operating system. The following should work with Ubuntu or another Debian Linux flavor that uses APT (Advanced Package Protocol).
 
 Clone the repository and enter the newly created directory:

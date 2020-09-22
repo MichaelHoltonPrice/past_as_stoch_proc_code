@@ -1,7 +1,6 @@
-scipy==1.1.0
-matplotlib==2.2.2
-tensorflow==1.13.1
-pandas==0.23.0
-numpy==1.16.1
-tensorflow_probability==0.5.0
-scikit_learn==0.21.3
+scipy
+matplotlib
+tensorflow
+pandas
+numpy
+scikit_learn
