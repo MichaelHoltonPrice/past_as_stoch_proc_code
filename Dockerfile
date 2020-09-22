@@ -1,7 +1,12 @@
 # The following two commands can be used to build the Docker image and start a
-# container:
+# container. The -v tag mirrors on image on the host machine with the /data
+# folder in the Docker container.
 #
 # docker build -t michaelholtonprice/past_stoch_proc .
+# docker run --name past_stoch_proc -itv //c/Users/mpatm/past_stoch_proc_data:/data michaelholtonprice/past_stoch_proc
+#
+# If desired, the following command starts a container without mirroring a directory on the host machine:
+#
 # docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
 FROM ubuntu:18.04
 

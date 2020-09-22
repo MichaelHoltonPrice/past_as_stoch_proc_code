@@ -8,13 +8,13 @@ cd past_as_stoch_proc_code
 docker build -t michaelholtonprice/past_stoch_proc .
 ```
 
-Start a container. Use the -v tag to mirror the directory to the right of the semicolon on the host machine (...past_stoch_proc) with the directory past_as_stoch_proc_code in the Docker container. This allows the results to be accessed on the host machine.
+Start a container. Use the -v tag to mirror a directory for passing files between the host machine and the Docker container. The directory to the left of the semicolon is for the host machine and the directory to the left of the semicolon is for the Docker container.
 
 ```bash
-docker run --name past_stoch_proc -itv //c/Users/mpatm/past_stoch_proc:/past_as_stoch_proc_code
+docker run --name past_stoch_proc -itv //c/Users/mpatm/past_stoch_proc_data:/data michaelholtonprice/past_stoch_proc
 ```
 
-If, for whatever reason, it is not necessary to mirror the directory, use the following command:
+If desired, one can start a Docker container without mirroring the data directory with the following command:
 
 ```bash
 docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
@@ -30,7 +30,7 @@ git clone https://github.com/MichaelHoltonPrice/past_as_stoch_proc_code
 cd past_as_stoch_proc_code
 ```
 
-If necessary, install R (>=3.5.0). The following shell script can be used. It must be given execution permissions:
+If necessary, install R (>=3.5.0). The following shell script in the cloned directory can be used. It must be given execution permissions:
 ```bash
 sudo chmod +x ./install_R.sh
 sudo ./install_R.sh
@@ -70,6 +70,12 @@ Return to the past_as_stoch_proc_code directory and run the Python script to mak
 ```bash
 cd ..
 python3 make_figures.py
+```
+
+If using a Docker container with a mirrored directory on the host machine (see above), one can copy folders into the /data directory to view them on the host machine. For example, to copy the Moralizing Gods figure (Figure S1) use:
+
+```bash
+cp /past_as_stoch_proc_code/pc12_movement_plot_colored_by_MoralisingGods.pdf /data
 ```
 
 # Notes on the moralizing gods code
