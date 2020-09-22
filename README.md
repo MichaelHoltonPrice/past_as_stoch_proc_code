@@ -1,8 +1,20 @@
-# Running the code
-## Option 1: Use a Docker image from Docker hub
+# Installing requirements
 TBD
-## Option 2: Build the Docker image using the Dockerfile
-TODO: Update to work with current code base
+## Option 1: Build the Docker image using the Dockerfile
+First, clone the database (only the Dockerfile is in fact needed, and could instead be downloaded directly using the github web interface; the git protocol does not support directly downloading individual files).
+
+```bash
+git clone https://github.com/MichaelHoltonPrice/past_as_stoch_proc_code
+cd past_as_stoch_proc_code
+docker build -t michaelholtonprice/seshat .
+```
+```bash
+docker run --name seshat -it michaelholtonprice/seshat
+```
+
+
+
+
 ```bash
 git clone https://github.com/MichaelHoltonPrice/past_as_stoch_proc_code
 cd past_as_stoch_proc_code
@@ -15,6 +27,8 @@ The preceding code will build a new Docker image using the Dockerfile in the pas
 ```bash
 python3 seshat.py
 ```
+
+## Option 2: Use a Docker image from Docker hub
 
 ## Option 3: Run on an existing machine. R 3.5 or later is needed. Details will vary based on the machine and operating system. The following should work with Ubuntu.
 
@@ -44,7 +58,6 @@ Rscript '!MoralizingGods.R'
 Check the data against those used in the 2019 Nature paper by Whitehouse et al.:
 ```bash
 cd mhg_code
-Rscript '!MoralizingGods.R'
 Rscript check_moralising_gods_status.R
 ```
 
