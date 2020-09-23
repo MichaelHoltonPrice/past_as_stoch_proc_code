@@ -26,13 +26,13 @@ docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
 docker pull michaelholtonprice/past_stoch_proc
 ```
 
-Build the Docker image with a mirrored directory on the host (see above under Option 1):
+Start a Docker container with a mirrored directory on the host (see above under Option 1):
 
 ```bash
 docker run --name past_stoch_proc -itv //c/Users/mpatm/past_stoch_proc_data:/data michaelholtonprice/past_stoch_proc
 ```
 
-Build the Docker image without a mirrored directory on the host (see above under Option 1):
+Start a Docker container without a mirrored directory on the host (see above under Option 1):
 
 ```bash
 docker run --name past_stoch_proc -it michaelholtonprice/past_stoch_proc
