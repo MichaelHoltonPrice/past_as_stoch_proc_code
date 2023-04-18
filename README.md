@@ -1,4 +1,11 @@
+# Warning
+Aside from the moralizing gods code (see below), this repository is deprecated.
+I am leaving it up for historical purposes and because the moralizing god code
+was used for this in-review manuscript:
+Wolpert et al. -- The past as a stochastic process
+
 # Installing software requirements
+
 ## Option 1: Build the Docker image using the Dockerfile
 First, clone the database and build the Docker image. Only the Dockerfile is need to build the image, and could instead be downloaded directly using the github web interface; the git protocol does not support directly downloading individual files.
 
